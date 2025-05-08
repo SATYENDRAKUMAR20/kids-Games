@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Learning Games</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f0f9ff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #ff9a9e, #a18cd1);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .game {
+            background-color: #f6f6f6;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+        .game:hover {
+            transform: scale(1.02);
+            background-color: #e9f5ff;
+        }
+        .game-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #a0e7e5, #b5ead7);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 24px;
+            color: white;
+        }
+        .game-info h3 {
+            margin: 0;
+            color: #ff6b6b;
+        }
+        .game-info p {
+            margin: 5px 0 0;
+            color: #666;
+        }
+        .features {
+            background-color: #d4edff;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .features h2 {
+            color: #4a90e2;
+            margin-top: 0;
+        }
+        .features ul {
+            padding-left: 20px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            color: #666;
+            font-size: 14px;
+        }
+        .play-button {
+            background: linear-gradient(45deg, #ff9a9e, #fbc2eb);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-left: auto;
+            font-family: inherit;
+            font-weight: bold;
+        }
+        .play-button:hover {
+            background: linear-gradient(45deg, #ff7b85, #f8a5d8);
+        }
+
+        /* Game Screens */
+        .game-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .level-display {
+            color: #4a90e2;
+        }
+        .score-display {
+            color: #ff9a9e;
+        }
+        
+        /* Color Game */
+        #color-game .color-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .color-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: transform 0.2s;
+        }
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        .color-option.selected {
+            border-color: #333;
+            transform: scale(1.1);
+        }
+        
+        /* A-Z Quiz Game */
+        #az-quiz .quiz-area {
+            margin: 20px 0;
+        }
+        .target-image {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            object-fit: contain;
+        }
+        .word-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .word-option {
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+        .word-option:hover {
+            background-color: #e0e0e0;
+        }
+        .word-option.selected {
+            background-color: #b5ead7;
+            transform: scale(1.05);
+        }
+        
+        /* Math Game */
+        #math-game .math-problem {
+            font-size: 32px;
+            margin: 20px 0;
+            min-height: 50px;
+        }
+        .math-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .math-option {
+            padding: 15px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+        .math-option:hover {
+            background-color: #e0e0e0;
+        }
+        .math-option.selected {
+            background-color: #b5ead7;
+            transform: scale(1.05);
+        }
+        
+        /* Counting Game */
+        #counting-game .counting-area {
+            margin: 20px 0;
+        }
+        .counting-objects {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .counting-object {
+            width: 50px;
+            height: 50px;
+            background-color: #ffb7b7;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+        .number-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .number-option {
+            width: 40px;
+            height: 40px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .number-option:hover {
+            background-color: #e0e0e0;
+        }
+        .number-option.selected {
+            background-color: #b5ead7;
+            transform: scale(1.1);
+        }
+        
+        /* Feedback */
+        .feedback {
+            margin: 15px 0;
+            font-size: 24px;
+            min-height: 30px;
+        }
+        .correct {
+            color: #4CAF50;
+        }
+        .incorrect {
+            color: #f44336;
+        }
+        .level-up {
+            animation: bounce 0.5s;
+            color: #FFC107;
+            font-weight: bold;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Points System */
+        .points-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+        }
+        .points-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .points-label {
+            font-size: 14px;
+        }
+        .redeem-btn {
+            background: #FFC107;
+            color: #333;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-left: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .redeem-btn:hover {
+            background: #FFD54F;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌟 Kids Games: For Toddlers 3-5 🌟</h1>
+        <p>Fun and educational games to teach colors, ABCs, math, and more!</p>
+    </div>
+
+    <div class="container">
+        <h2>🎮 Learning Games Collection</h2>
+        
+        <div class="game" data-game="color-game">
+            <div class="game-icon">🎨</div>
+            <div class="game-info">
+                <h3>Color Match</h3>
+                <p>Find the matching color! Great for color recognition.</p>
+            </div>
+            <button class="play-button">Play</button>
+        </div>
+        
+        <div class="game" data-game="az-quiz">
+            <div class="game-icon">🔤</div>
+            <div class="game-info">
+                <h3>A-Z Quiz</h3>
+                <p>Learn ABCs with pictures! Select the correct word.</p>
+            </div>
+            <button class="play-button">Play</button>
+        </div>
+        
+        <div class="game" data-game="math-game">
+            <div class="game-icon">➕</div>
+            <div class="game-info">
+                <h3>Math Fun</h3>
+                <p>Solve simple math problems! Addition, subtraction and more.</p>
+            </div>
+            <button class="play-button">Play</button>
+        </div>
+        
+        <div class="game" data-game="counting-game">
+            <div class="game-icon">🔢</div>
+            <div class="game-info">
+                <h3>Counting Fun</h3>
+                <p>Count the objects! Learn numbers 1 to 10.</p>
+            </div>
+            <button class="play-button">Play</button>
+        </div>
+
+        <div class="features">
+            <h2>✨ Key Features</h2>
+            <ul>
+                <li>4 interactive learning games with multiple levels</li>
+                <li>Scoring system to track progress</li>
+                <li>100% FREE - no hidden costs</li>
+                <li>Works offline - no internet needed</li>
+                <li>Bright, kid-friendly graphics</li>
+            </ul>
+        </div>
+        
+        <p style="text-align: center; font-size: 18px;">
+            <b>Learning through play</b> is the best way for toddlers to grow!<br>
+            Try these games today and watch your child blossom. 🌱
+        </p>
+    </div>
+
+    <div class="footer">
+        <p>© 2023 Kids Learning Games | Designed with ❤️ for toddlers</p>
+    </div>
+
+    <!-- Points Container -->
+    <div class="points-container">
+        <div>
+            <div class="points-value">0</div>
+            <div class="points-label">POINTS</div>
+        </div>
+        <button class="redeem-btn">Redeem</button>
+    </div>
+
+    <!-- Color Game Screen -->
+    <div class="game-screen" id="color-game">
+        <div class="game-container">
+            <button class="close-btn">X</button>
+            <div class="game-header">
+                <div class="level-display">Level: 1</div>
+                <div class="score-display">Score: 0</div>
+            </div>
+            <h2>Color Match</h2>
+            <p>Click the color that matches the one shown above!</p>
+            <div class="target-color" style="width: 100px; height: 100px; margin: 0 auto; border-radius: 50%;"></div>
+            <div class="color-options"></div>
+            <div class="feedback"></div>
+        </div>
+    </div>
+
+    <!-- A-Z Quiz Game Screen -->
+    <div class="game-screen" id="az-quiz">
+        <div class="game-container">
+            <button class="close-btn">X</button>
+            <div class="game-header">
+                <div class="level-display">Level: 1</div>
+                <div class="score-display">Score: 0</div>
+            </div>
+            <h2>A-Z Quiz</h2>
+            <p>What is this? Select the correct word!</p>
+            <div class="quiz-area">
+                <img class="target-image" src="" alt="Quiz Image">
+                <div class="word-options"></div>
+            </div>
+            <div class="feedback"></div>
+        </div>
+    </div>
+
+    <!-- Math Game Screen -->
+    <div class="game-screen" id="math-game">
+        <div class="game-container">
+            <button class="close-btn">X</button>
+            <div class="game-header">
+                <div class="level-display">Level: 1</div>
+                <div class="score-display">Score: 0</div>
+            </div>
+            <h2>Math Fun</h2>
+            <p>Solve the math problem!</p>
+            <div class="math-problem"></div>
+            <div class="math-options"></div>
+            <div class="feedback"></div>
+        </div>
+    </div>
+
+    <!-- Counting Game Screen -->
+    <div class="game-screen" id="counting-game">
+        <div class="game-container">
+            <button class="close-btn">X</button>
+            <div class="game-header">
+                <div class="level-display">Level: 1</div>
+                <div class="score-display">Score: 0</div>
+            </div>
+            <h2>Counting Fun</h2>
+            <p>Count the objects and select the correct number!</p>
+            <div class="counting-area">
+                <div class="counting-objects"></div>
+                <div class="number-options"></div>
+            </div>
+            <div class="feedback"></div>
+        </div>
+    </div>
+
+    <script>
+        // Game Data
+        const colors = ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33F3', '#33FFF5', '#8A33FF', '#FF33A8'];
+        
+        // A-Z Quiz Data
+        const azQuizData = {
+            'A': { image: '🍎', options: ['Apple', 'Ape', 'Ant'] },
+            'B': { image: '👦', options: ['Boy', 'Ball', 'Bear'] },
+            'C': { image: '🐱', options: ['Cat', 'Car', 'Cup'] },
+            'D': { image: '🦆', options: ['Duck', 'Dog', 'Door'] },
+            'E': { image: '🐘', options: ['Elephant', 'Egg', 'Ear'] },
+            'F': { image: '🐟', options: ['Fish', 'Fox', 'Fan'] },
+            'G': { image: '🦒', options: ['Giraffe', 'Girl', 'Goat'] },
+            'H': { image: '🏠', options: ['House', 'Hat', 'Hand'] },
+            'I': { image: '🍦', options: ['Ice Cream', 'Igloo', 'Ink'] },
+            'J': { image: '🧃', options: ['Juice', 'Jar', 'Jacket'] },
+            'K': { image: '🪁', options: ['Kite', 'Key', 'King'] },
+            'L': { image: '🦁', options: ['Lion', 'Leaf', 'Lamp'] },
+            'M': { image: '🐵', options: ['Monkey', 'Moon', 'Milk'] },
+            'N': { image: '🌙', options: ['Night', 'Nest', 'Nose'] },
+            'O': { image: '🐙', options: ['Octopus', 'Orange', 'Owl'] },
+            'P': { image: '🐷', options: ['Pig', 'Pen', 'Pan'] },
+            'Q': { image: '👑', options: ['Queen', 'Quilt', 'Quail'] },
+            'R': { image: '🌈', options: ['Rainbow', 'Rabbit', 'Rose'] },
+            'S': { image: '☀️', options: ['Sun', 'Star', 'Sock'] },
+            'T': { image: '🌳', options: ['Tree', 'Toy', 'Table'] },
+            'U': { image: '☂️', options: ['Umbrella', 'Unicorn', 'Uncle'] },
+            'V': { image: '🎻', options: ['Violin', 'Van', 'Vase'] },
+            'W': { image: '🐋', options: ['Whale', 'Water', 'Watch'] },
+            'X': { image: '❌', options: ['Xylophone', 'X-ray', 'Box'] },
+            'Y': { image: '🪀', options: ['Yo-yo', 'Yak', 'Yarn'] },
+            'Z': { image: '🦓', options: ['Zebra', 'Zip', 'Zoo'] }
+        };
+        
+        // Math Game Data
+        const mathProblems = [];
+        // Generate addition problems (1-10)
+        for (let i = 1; i <= 10; i++) {
+            for (let j = 1; j <= 10; j++) {
+                mathProblems.push({
+                    question: `${i} + ${j}`,
+                    answer: i + j,
+                    type: 'addition'
+                });
+            }
+        }
+        // Generate subtraction problems (1-10)
+        for (let i = 1; i <= 10; i++) {
+            for (let j = 1; j <= i; j++) {
+                mathProblems.push({
+                    question: `${i} - ${j}`,
+                    answer: i - j,
+                    type: 'subtraction'
+                });
+            }
+        }
+        // Generate multiplication problems (1-5)
+        for (let i = 1; i <= 5; i++) {
+            for (let j = 1; j <= 5; j++) {
+                mathProblems.push({
+                    question: `${i} × ${j}`,
+                    answer: i * j,
+                    type: 'multiplication'
+                });
+            }
+        }
+        // Generate division problems (1-5)
+        for (let i = 1; i <= 5; i++) {
+            for (let j = 1; j <= 5; j++) {
+                mathProblems.push({
+                    question: `${i * j} ÷ ${j}`,
+                    answer: i,
+                    type: 'division'
+                });
+            }
+        }
+        
+        const countingObjects = ['🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍒'];
+
+        // Game Variables
+        let currentGame = null;
+        let gameState = {
+            level: 1,
+            score: 0,
+            correctInRow: 0,
+            currentLetter: 'A',
+            usedMathProblems: []
+        };
+
+        // Points System Variables
+        let totalPoints = 0;
+        const pointsValueEl = document.querySelector('.points-value');
+        const redeemBtn = document.querySelector('.redeem-btn');
+
+        // Initialize games when play button clicked
+        document.querySelectorAll('.play-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const gameId = this.parentElement.getAttribute('data-game');
+                currentGame = gameId;
+                resetGameState();
+                document.getElementById(gameId).style.display = 'flex';
+                updateGameHeader();
+                
+                switch(gameId) {
+                    case 'color-game':
+                        initColorGame();
+                        break;
+                    case 'az-quiz':
+                        initAZQuiz();
+                        break;
+                    case 'math-game':
+                        initMathGame();
+                        break;
+                    case 'counting-game':
+                        initCountingGame();
+                        break;
+                }
+            });
+        });
+
+        // Close game screens
+        document.querySelectorAll('.close-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.closest('.game-screen').style.display = 'none';
+                resetGames();
+            });
+        });
+
+        function resetGameState() {
+            gameState = {
+                level: 1,
+                score: 0,
+                correctInRow: 0,
+                currentLetter: 'A',
+                usedMathProblems: []
+            };
+        }
+
+        function updateGameHeader() {
+            const header = document.querySelector(`#${currentGame} .game-header`);
+            if (header) {
+                header.querySelector('.level-display').textContent = `Level: ${gameState.level}`;
+                header.querySelector('.score-display').textContent = `Score: ${gameState.score}`;
+            }
+        }
+
+        function addScore(points) {
+            gameState.score += points;
+            gameState.correctInRow++;
+            addPoints(points);
+            
+            // Level up every 3 correct answers
+            if (gameState.correctInRow >= 3) {
+                gameState.level++;
+                gameState.correctInRow = 0;
+                
+                const feedback = document.querySelector(`#${currentGame} .feedback`);
+                feedback.textContent = `Level Up! 🎉 (Now Level ${gameState.level})`;
+                feedback.className = 'feedback level-up';
+                
+                setTimeout(() => {
+                    feedback.className = 'feedback correct';
+                }, 1500);
+            }
+            
+            updateGameHeader();
+        }
+
+        function deductScore(points) {
+            gameState.score = Math.max(0, gameState.score - points);
+            gameState.correctInRow = 0;
+            deductPoints(points);
+            updateGameHeader();
+        }
+
+        // Points System Functions
+        function updatePointsDisplay() {
+            pointsValueEl.textContent = totalPoints;
+        }
+
+        function addPoints(points) {
+            totalPoints += points;
+            updatePointsDisplay();
+            // Show points animation
+            pointsValueEl.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                pointsValueEl.style.transform = 'scale(1)';
+            }, 300);
+        }
+
+        function deductPoints(points) {
+            totalPoints = Math.max(0, totalPoints - points);
+            updatePointsDisplay();
+            // Show points animation
+            pointsValueEl.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                pointsValueEl.style.transform = 'scale(1)';
+            }, 300);
+        }
+
+        // Redeem button click handler
+        redeemBtn.addEventListener('click', function() {
+            if (totalPoints < 1000) {
+                alert(`You need at least 1000 points to redeem (current: ${totalPoints})`);
+                return;
+            }
+            alert(`1000 points = ₹1\nYour current points: ${totalPoints}\nRedeemable amount: ₹${Math.floor(totalPoints/1000)}\n\n(Note: This is a demo. No actual money will be transferred)`);
+        });
+
+        // Initialize points display
+        updatePointsDisplay();
+
+        // Color Game
+        function initColorGame() {
+            const targetColor = document.querySelector('#color-game .target-color');
+            const colorOptions = document.querySelector('#color-game .color-options');
+            const feedback = document.querySelector('#color-game .feedback');
+            
+            // Set random target color
+            const colorPool = colors.slice(0, 3 + Math.min(gameState.level, 5));
+            const randomColor = colorPool[Math.floor(Math.random() * colorPool.length)];
+            targetColor.style.backgroundColor = randomColor;
+            
+            // Create color options
+            colorOptions.innerHTML = '';
+            let options = [randomColor];
+            
+            // Add random colors (more options in higher levels)
+            const totalOptions = Math.min(3 + Math.floor(gameState.level/2), 8);
+            while (options.length < totalOptions) {
+                const random = colorPool[Math.floor(Math.random() * colorPool.length)];
+                if (!options.includes(random)) options.push(random);
+            }
+            
+            // Shuffle options
+            options = options.sort(() => Math.random() - 0.5);
+            
+            options.forEach(color => {
+                const colorDiv = document.createElement('div');
+                colorDiv.className = 'color-option';
+                colorDiv.style.backgroundColor = color;
+                colorDiv.addEventListener('click', function() {
+                    if (this.classList.contains('selected')) return;
+                    
+                    document.querySelectorAll('.color-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    this.classList.add('selected');
+                    
+                    if (color === randomColor) {
+                        feedback.textContent = 'Correct! +10 points';
+                        feedback.className = 'feedback correct';
+                        addScore(10);
+                        setTimeout(() => {
+                            initColorGame();
+                        }, 1000);
+                    } else {
+                        feedback.textContent = 'Wrong! -5 points';
+                        feedback.className = 'feedback incorrect';
+                        deductScore(5);
+                    }
+                });
+                colorOptions.appendChild(colorDiv);
+            });
+        }
+
+        // A-Z Quiz Game
+        function initAZQuiz() {
+            const targetImage = document.querySelector('#az-quiz .target-image');
+            const wordOptions = document.querySelector('#az-quiz .word-options');
+            const feedback = document.querySelector('#az-quiz .feedback');
+            
+            // Get current letter data
+            const letters = Object.keys(azQuizData);
+            const letterData = azQuizData[gameState.currentLetter];
+            
+            // Set image
+            targetImage.src = `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'><text x='50%' y='50%' font-size='80' text-anchor='middle' dominant-baseline='middle'>${letterData.image}</text></svg>`;
+            targetImage.alt = letterData.options[0];
+            
+            // Create word options
+            wordOptions.innerHTML = '';
+            let options = [...letterData.options];
+            
+            // Shuffle options
+            options = options.sort(() => Math.random() - 0.5);
+            
+            options.forEach(word => {
+                const wordDiv = document.createElement('div');
+                wordDiv.className = 'word-option';
+                wordDiv.textContent = word;
+                wordDiv.addEventListener('click', function() {
+                    if (this.classList.contains('selected')) return;
+                    
+                    document.querySelectorAll('.word-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    this.classList.add('selected');
+                    
+                    if (word === letterData.options[0]) {
+                        feedback.textContent = 'Correct! +15 points';
+                        feedback.className = 'feedback correct';
+                        addScore(15);
+                        
+                        // Move to next letter
+                        const currentIndex = letters.indexOf(gameState.currentLetter);
+                        if (currentIndex < letters.length - 1) {
+                            gameState.currentLetter = letters[currentIndex + 1];
+                        } else {
+                            gameState.currentLetter = letters[0]; // Restart from A
+                        }
+                        
+                        setTimeout(() => {
+                            initAZQuiz();
+                        }, 1000);
+                    } else {
+                        feedback.textContent = 'Wrong! -5 points';
+                        feedback.className = 'feedback incorrect';
+                        deductScore(5);
+                    }
+                });
+                wordOptions.appendChild(wordDiv);
+            });
+            
+            // Update header with current letter
+            document.querySelector('#az-quiz .level-display').textContent = `Letter: ${gameState.currentLetter}`;
+        }
+
+        // Math Game
+        function initMathGame() {
+            const mathProblem = document.querySelector('#math-game .math-problem');
+            const mathOptions = document.querySelector('#math-game .math-options');
+            const feedback = document.querySelector('#math-game .feedback');
+            
+            // Get unused problems
+            const unusedProblems = mathProblems.filter(problem => 
+                !gameState.usedMathProblems.includes(problem.question)
+            );
+            
+            // If all problems used, reset used problems
+            if (unusedProblems.length === 0) {
+                gameState.usedMathProblems = [];
+                return initMathGame();
+            }
+            
+            // Select random problem
+            const randomProblem = unusedProblems[
+                Math.floor(Math.random() * unusedProblems.length)
+            ];
+            
+            // Mark problem as used
+            gameState.usedMathProblems.push(randomProblem.question);
+            
+            // Display problem
+            mathProblem.textContent = randomProblem.question + " = ?";
+            
+            // Create answer options
+            mathOptions.innerHTML = '';
+            let options = [randomProblem.answer];
+            
+            // Add random options (different based on level)
+            const maxOffset = Math.min(5, Math.floor(gameState.level/2) + 2);
+            while (options.length < 4) {
+                const offset = Math.floor(Math.random() * maxOffset * 2) - maxOffset;
+                const randomAnswer = Math.max(0, randomProblem.answer + offset);
+                if (!options.includes(randomAnswer)) {
+                    options.push(randomAnswer);
+                }
+            }
+            
+            // Shuffle options
+            options = options.sort(() => Math.random() - 0.5);
+            
+            options.forEach(answer => {
+                const answerDiv = document.createElement('div');
+                answerDiv.className = 'math-option';
+                answerDiv.textContent = answer;
+                answerDiv.addEventListener('click', function() {
+                    if (this.classList.contains('selected')) return;
+                    
+                    document.querySelectorAll('.math-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    this.classList.add('selected');
+                    
+                    if (answer === randomProblem.answer) {
+                        feedback.textContent = 'Correct! +20 points';
+                        feedback.className = 'feedback correct';
+                        addScore(20);
+                        setTimeout(() => {
+                            initMathGame();
+                        }, 1000);
+                    } else {
+                        feedback.textContent = `Wrong! -10 points (Answer was ${randomProblem.answer})`;
+                        feedback.className = 'feedback incorrect';
+                        deductScore(10);
+                    }
+                });
+                mathOptions.appendChild(answerDiv);
+            });
+        }
+
+        // Counting Game
+        function initCountingGame() {
+            const countingObjects = document.querySelector('#counting-game .counting-objects');
+            const numberOptions = document.querySelector('#counting-game .number-options');
+            const feedback = document.querySelector('#counting-game .feedback');
+            
+            // Set random count (1-5 in level 1, up to 10 in higher levels)
+            const maxCount = Math.min(5 + Math.floor(gameState.level/2), 10);
+            currentCount = Math.floor(Math.random() * maxCount) + 1;
+            
+            // Create objects
+            countingObjects.innerHTML = '';
+            const randomObject = countingObjects[Math.floor(Math.random() * countingObjects.length)];
+            for (let i = 0; i < currentCount; i++) {
+                const obj = document.createElement('div');
+                obj.className = 'counting-object';
+                obj.textContent = randomObject;
+                countingObjects.appendChild(obj);
+            }
+            
+            // Create number options (include correct + random)
+            numberOptions.innerHTML = '';
+            let options = [currentCount];
+            const minOption = Math.max(1, currentCount - 2);
+            const maxOption = Math.min(10, currentCount + 2);
+            
+            while (options.length < 5) {
+                const random = Math.floor(Math.random() * (maxOption - minOption + 1)) + minOption;
+                if (!options.includes(random)) options.push(random);
+            }
+            
+            // Shuffle options
+            options = options.sort(() => Math.random() - 0.5);
+            
+            options.forEach(num => {
+                const numDiv = document.createElement('div');
+                numDiv.className = 'number-option';
+                numDiv.textContent = num;
+                numDiv.addEventListener('click', function() {
+                    if (this.classList.contains('selected')) return;
+                    
+                    document.querySelectorAll('.number-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    this.classList.add('selected');
+                    
+                    if (num === currentCount) {
+                        feedback.textContent = `Correct! +${currentCount * 2} points`;
+                        feedback.className = 'feedback correct';
+                        addScore(currentCount * 2);
+                        setTimeout(() => {
+                            initCountingGame();
+                        }, 1000);
+                    } else {
+                        feedback.textContent = `Wrong! -${currentCount} points`;
+                        feedback.className = 'feedback incorrect';
+                        deductScore(currentCount);
+                    }
+                });
+                numberOptions.appendChild(numDiv);
+            });
+        }
+
+        // Reset all games when closed
+        function resetGames() {
+            document.querySelectorAll('.feedback').forEach(fb => {
+                fb.textContent = '';
+                fb.className = 'feedback';
+            });
+        }
+    </script>
+</body>
+</html>
